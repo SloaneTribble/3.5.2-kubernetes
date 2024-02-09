@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nexus
+  namespace: bootcamp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nexus
+  template:
+    metadata:
+      labels:
+        app: nexus
+    spec:
+      containers:
+      - name: nexus
+        image: nexus:kube  # Ensure this image is loaded into Kind
+        imagePullPolicy: IfNotPresent  # Use IfNotPresent or Never for local images
+        ports:
+        - containerPort: 8081
+        resources:  # Adjust these values based on your environment
+          requests:
+            memory: "2Gi"
+            cpu: "1"
+          limits:
+            memory: "4Gi"
+            cpu: "2"
+        readinessProbe:  # Basic readiness probe; adjust as needed
+          httpGet:
+            path: /  # Adjust if Nexus listens on a different path for readiness
+            port: 8081
+          initialDelaySeconds: 60  # Nexus might take some time to start; adjust this value based on your observations
+          periodSeconds: 10
