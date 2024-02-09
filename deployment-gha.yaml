@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: runner
+  namespace: bootcamp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: runner
+  template:
+    metadata:
+      labels:
+        app: runner
+    spec:
+      containers:
+      - name: runner
+        image: runner:kube  # Change this to your image name and version
+        # Include any other necessary fields, like env, if you need to customize your runner
+        ports:
+        - containerPort: 80
